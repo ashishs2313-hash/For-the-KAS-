@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For You, Vidyashree 🩷</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #07000f;
+      --rose: #e8a4b0;
+      --gold: #f0c060;
+      --pink: #ffb3c8;
+      --cream: #fff5f8;
+      --purple: #3a0050;
+      --glow-pink: rgba(232,160,176,0.45);
+      --glow-gold: rgba(240,192,96,0.35);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'EB Garamond', serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── SPLASH ─── */
+    #splash {
+      position: fixed; inset: 0; z-index: 2000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+      background: radial-gradient(ellipse at 50% 40%, #1c0028 0%, #07000f 100%);
+      transition: opacity 1.4s ease, visibility 1.4s ease;
+    }
+    #splash.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .splash-letter {
+      font-size: 5rem;
+      animation: floatY 3s ease-in-out infinite;
+      margin-bottom: 1.8rem;
+      filter: drop-shadow(0 0 30px rgba(232,160,176,0.7));
+    }
+
+    .splash-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+      color: var(--rose);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.6rem;
+    }
+    .splash-sub {
+      font-size: 1rem;
+      color: rgba(255,245,248,0.45);
+      letter-spacing: 0.18em;
+      margin-bottom: 3rem;
+    }
+
+    .open-btn {
+      background: transparent;
+      border: 1.5px solid var(--rose);
+      color: var(--rose);
+      padding: 0.9rem 2.8rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1.25rem;
+      letter-spacing: 0.2em; cursor: pointer;
+      border-radius: 60px;
+      transition: all 0.4s ease;
+      position: relative; overflow: hidden;
+    }
+    .open-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse, rgba(232,160,176,0.18), transparent);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .open-btn:hover {
+      box-shadow: 0 0 35px var(--glow-pink), 0 0 70px rgba(232,160,176,0.15);
+      transform: scale(1.06);
+    }
+    .open-btn:hover::after { opacity: 1; }
+
+    /* ─── PARTICLES ─── */
+    #particles {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+      overflow: hidden;
+    }
+    .pt {
+      position: absolute;
+      animation: rise linear infinite;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(105vh) rotate(0deg);   opacity: 0; }
+      8%   { opacity: 0.75; }
+      92%  { opacity: 0.25; }
+      100% { transform: translateY(-10vh) rotate(340deg); opacity: 0; }
+    }
+
+    /* ─── MUSIC BTN ─── */
+    #musicBtn {
+      position: fixed; top: 1.2rem; right: 1.2rem;
+      z-index: 999;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(232,160,176,0.4);
+      background: rgba(232,160,176,0.1);
+      color: var(--rose); font-size: 1.1rem;
+      cursor: pointer; backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center;
+      transition: all 0.3s;
+    }
+    #musicBtn.show { display: flex; }
+    #musicBtn:hover { background: rgba(232,160,176,0.25); box-shadow: 0 0 18px var(--glow-pink); }
+
+    /* ─── MAIN ─── */
+    #main { display: none; position: relative; z-index: 1; }
+    #main.show { display: block; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+      background: radial-gradient(ellipse at 50% 45%, #1a0028 0%, #07000f 68%);
+      position: relative; overflow: hidden;
+    }
+
+    .hero-pre {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      color: rgba(255,179,200,0.6);
+      letter-spacing: 0.3em; margin-bottom: 1.2rem;
+      animation: fadeIn 2s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: transparent;
+      background: linear-gradient(130deg, var(--rose) 0%, var(--gold) 50%, var(--pink) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      filter: drop-shadow(0 0 40px rgba(232,160,176,0.5));
+      animation: nameShimmer 4s ease-in-out infinite alternate, fadeUp 1.4s ease both;
+    }
+    @keyframes nameShimmer {
+      from { filter: drop-shadow(0 0 25px rgba(232,160,176,0.45)); }
+      to   { filter: drop-shadow(0 0 55px rgba(240,192,96,0.65)); }
+    }
+
+    .hero-tagline {
+      margin-top: 1.4rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: clamp(1rem, 3vw, 1.4rem);
+      color: rgba(232,160,176,0.75);
+      letter-spacing: 0.12em;
+      animation: fadeIn 3s ease both;
+    }
+
+    .scroll-cue {
+      position: absolute; bottom: 2.2rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem; letter-spacing: 0.3em;
+      color: rgba(255,179,200,0.3);
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* Stars */
+    .star { position: absolute; color: var(--rose); opacity: 0.25; animation: twinkle 3s ease-in-out infinite; }
+    @keyframes twinkle {
+      0%,100% { opacity: 0.15; transform: scale(1); }
+      50%      { opacity: 0.55; transform: scale(1.4); }
+    }
+
+    /* ─── SECTIONS ─── */
+    .sec {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 5rem 2rem; position: relative; overflow: hidden;
+    }
+    .sec:nth-child(even)  { background: radial-gradient(ellipse at 30% 50%, #150022 0%, #07000f 65%); }
+    .sec:nth-child(odd)   { background: radial-gradient(ellipse at 70% 50%, #0e001c 0%, #07000f 65%); }
+
+    .sec-bg-num {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 25vw, 16rem);
+      font-weight: 300;
+      color: rgba(232,160,176,0.04);
+      pointer-events: none; user-select: none;
+      letter-spacing: 0.05em; line-height: 1;
+    }
+
+    .card {
+      max-width: 720px; text-align: center;
+      opacity: 0; transform: translateY(45px);
+      transition: opacity 1.1s ease, transform 1.1s ease;
+      position: relative; z-index: 1;
+    }
+    .card.in { opacity: 1; transform: translateY(0); }
+
+    .tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 0.85rem;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); opacity: 0.8;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: clamp(1.8rem, 5.5vw, 3rem);
+      color: var(--pink); line-height: 1.25;
+      margin-bottom: 1.6rem;
+    }
+
+    .divider {
+      width: 55px; height: 1px; margin: 0 auto 2rem;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+    }
+
+    .body-text {
+      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+      line-height: 2; color: rgba(255,245,248,0.82);
+    }
+    .body-text strong { color: var(--rose); font-weight: 600; }
+    .body-text em { font-style: italic; color: var(--gold); }
+
+    /* Officer title */
+    .officer {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: clamp(2rem, 6vw, 4.2rem);
+      color: transparent;
+      background: linear-gradient(130deg, var(--gold), var(--rose));
+      -webkit-background-clip: text; background-clip: text;
+      filter: drop-shadow(0 0 22px rgba(240,192,96,0.4));
+      animation: nameShimmer 2.5s ease-in-out infinite alternate;
+      margin: 0.8rem 0 1.6rem;
+    }
+
+    /* ─── CLOSING ─── */
+    .closing {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 5rem 2rem;
+      background: radial-gradient(ellipse at 50% 45%, #1e0030 0%, #07000f 75%);
+      position: relative; overflow: hidden;
+    }
+
+    .closing .card { max-width: 660px; }
+
+    .heart-pulse {
+      font-size: 5.5rem;
+      animation: pulse 1.3s ease-in-out infinite;
+      display: block; margin: 1.8rem auto;
+      filter: drop-shadow(0 0 25px rgba(232,160,176,0.7));
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      14%      { transform: scale(1.22); }
+      28%      { transform: scale(1); }
+      42%      { transform: scale(1.14); }
+    }
+
+    .closing-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: clamp(1.15rem, 3.5vw, 1.75rem);
+      color: rgba(255,245,248,0.82); line-height: 1.9;
+      margin-bottom: 2rem;
+    }
+    .closing-quote strong { color: var(--rose); }
+
+    .sign {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1.15rem;
+      color: var(--rose); opacity: 0.75;
+      letter-spacing: 0.08em;
+    }
+
+    .ornament { color: var(--rose); opacity: 0.4; font-size: 1.2rem; letter-spacing: 0.6em; margin: 1.2rem 0; }
+
+    /* ─── SHARED ANIMATIONS ─── */
+    @keyframes floatY {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-18px); }
+    }
+    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeUp  { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── HIDDEN AUDIO ─── */
+    #bg-audio { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Background music (romantic piano) -->
+<audio id="bg-audio" loop>
+  <!-- Using a publicly available royalty-free romantic piano track -->
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg"/>
+</audio>
+
+<!-- Music toggle -->
+<button id="musicBtn" onclick="toggleMusic()" title="Toggle music">🎵</button>
+
+<!-- Floating particles -->
+<div id="particles"></div>
+
+<!-- ══════════ SPLASH ══════════ -->
+<div id="splash">
+  <div class="splash-letter">💌</div>
+  <h1 class="splash-heading">Someone left a message for you...</h1>
+  <p class="splash-sub">open it with your heart</p>
+  <button class="open-btn" onclick="enterSite()">Open your heart &nbsp;🩷</button>
+</div>
+
+<!-- ══════════ MAIN ══════════ -->
+<div id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="star" style="top:12%;left:8%;font-size:0.9rem;animation-delay:0s">✦</span>
+    <span class="star" style="top:22%;right:10%;font-size:0.7rem;animation-delay:1.1s">✧</span>
+    <span class="star" style="top:75%;left:6%;font-size:0.8rem;animation-delay:2.2s">✦</span>
+    <span class="star" style="top:65%;right:9%;font-size:0.65rem;animation-delay:0.6s">✧</span>
+    <span class="star" style="top:88%;left:22%;font-size:0.75rem;animation-delay:1.7s">✦</span>
+    <span class="star" style="top:38%;right:7%;font-size:0.85rem;animation-delay:2.8s">✧</span>
+    <span class="star" style="top:50%;left:4%;font-size:0.6rem;animation-delay:3.2s">✦</span>
+
+    <p class="hero-pre">✦ &nbsp; for the girl who chose her dreams before anything else &nbsp; ✦</p>
+    <h1 class="hero-name">Vidyashree</h1>
+    <p class="hero-tagline">This one's for you, amma &nbsp;🩷</p>
+    <div class="scroll-cue">↓ &nbsp; scroll &nbsp; ↓</div>
+  </section>
+
+  <!-- SECTION 1 — Journey -->
+  <section class="sec">
+    <span class="sec-bg-num">01</span>
+    <div class="card" data-reveal>
+      <p class="tag">✦ &nbsp; Your Journey &nbsp; ✦</p>
+      <h2 class="card-title">Six Years of Pure Courage</h2>
+      <div class="divider"></div>
+      <p class="body-text">
+        Six years. Not six days, not six months —
+        <strong>six whole years</strong> of waking up every single day with one goal in mind.<br><br>
+        I may not have been there from the beginning,
+        but I have seen you now. I have <em>felt</em> the weight you carry —
+        the sacrifices, the sleepless nights, the silent struggles no one else saw.<br><br>
+        And let me tell you — it is the most beautiful
+        and the bravest thing I have ever witnessed.
+        <strong>Every single page you studied, every doubt you fought — none of it was wasted.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 2 — Promise -->
+  <section class="sec">
+    <span class="sec-bg-num">02</span>
+    <div class="card" data-reveal>
+      <p class="tag">✦ &nbsp; My Promise &nbsp; ✦</p>
+      <h2 class="card-title">I came as your lucky charm 🍀</h2>
+      <div class="divider"></div>
+      <p class="body-text">
+        They say some people enter your life for a reason.
+        I like to believe I came into yours as your <strong>lucky charm</strong> —
+        and today, every bit of that luck, every prayer I have,
+        every good thing I wish for in this world...<br><br>
+        <em>I'm sending it all to you.</em><br><br>
+        <strong>You are not going alone into that room tomorrow.</strong>
+        I am with you. Every single second.
+        Every breath. Every word you speak in there —
+        I'll be right beside you, invisible but unshakeable. 🩷
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — Don't Doubt -->
+  <section class="sec">
+    <span class="sec-bg-num">03</span>
+    <div class="card" data-reveal>
+      <p class="tag">✦ &nbsp; Don't You Dare Doubt &nbsp; ✦</p>
+      <h2 class="card-title">You were built for this moment</h2>
+      <div class="divider"></div>
+      <p class="body-text">
+        The panel will see a confident woman walk in tomorrow.
+        But I want <em>you</em> to know what I see —
+        someone who has <strong>earned</strong> this moment
+        more than anyone else in that room.<br><br>
+        Don't you dare doubt yourself.
+        The fear you feel right now?
+        That's just the size of your dream
+        reminding you how much it matters.<br><br>
+        <strong>You are ready. You have always been ready.</strong>
+        The only thing left is to walk in there
+        and show them what I already know. 🌟
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 4 — The Dream -->
+  <section class="sec">
+    <span class="sec-bg-num">04</span>
+    <div class="card" data-reveal>
+      <p class="tag">✦ &nbsp; Your Destiny &nbsp; ✦</p>
+      <h2 class="card-title">I already see your name there</h2>
+      <div class="divider"></div>
+      <div class="officer">Officer Vidyashree L R &nbsp;🌟</div>
+      <p class="body-text">
+        I am already so proud of you.
+        Not because of the result —
+        but because of the person you became <strong>fighting for this dream.</strong><br><br>
+        Whatever happens tomorrow, you are my hero.
+        But I know, deep in my heart, I <em>truly</em> know —
+        <strong>you are going to make it.</strong><br><br>
+        The world is waiting for Officer Vidyashree.
+        <strong>Go claim what is yours.</strong> 🩷
+      </p>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="card" data-reveal>
+      <p class="tag">✦ &nbsp; Always With You &nbsp; ✦</p>
+      <span class="heart-pulse">🩷</span>
+      <p class="closing-quote">
+        "Go show them who you are, amma.<br>
+        I'll be right here, waiting to hear<br>
+        that you <strong>crushed it.</strong>"
+      </p>
+      <div class="ornament">✦ &nbsp; ✧ &nbsp; ✦</div>
+      <p class="sign">— With all my love &amp; prayers &nbsp;🩷😘</p>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<script>
+  /* ── ENTER ── */
+  function enterSite() {
+    document.getElementById('splash').classList.add('gone');
+    setTimeout(() => {
+      const main = document.getElementById('main');
+      main.classList.add('show');
+      spawnParticles();
+      initReveal();
+      playMusic();
+      document.getElementById('musicBtn').classList.add('show');
+    }, 900);
+  }
+
+  /* ── MUSIC ── */
+  const audio = document.getElementById('bg-audio');
+  let muted = false;
+
+  function playMusic() {
+    audio.volume = 0.45;
+    audio.play().catch(() => {}); // silently fail if blocked
+  }
+
+  function toggleMusic() {
+    const btn = document.getElementById('musicBtn');
+    if (muted) {
+      audio.play();
+      btn.textContent = '🎵';
+    } else {
+      audio.pause();
+      btn.textContent = '🔇';
+    }
+    muted = !muted;
+  }
+
+  /* ── PARTICLES ── */
+  function spawnParticles() {
+    const wrap = document.getElementById('particles');
+    const symbols = ['🩷','✦','✧','💫','🌸','⭐','🌷','✨'];
+    for (let i = 0; i < 30; i++) {
+      const el = document.createElement('div');
+      el.className = 'pt';
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      el.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        font-size: ${0.7 + Math.random() * 1.1}rem;
+        animation-duration: ${9 + Math.random() * 14}s;
+        animation-delay: ${Math.random() * 12}s;
+      `;
+      wrap.appendChild(el);
+    }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  function initReveal() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.18 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+  }
+</script>
+</body>
+</html>
